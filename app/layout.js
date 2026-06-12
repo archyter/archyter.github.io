@@ -1,7 +1,7 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "ARCHYTER — We Build Playbooks",
+  title: "Archyter",
   description:
     "Archyter turns bold ideas into architecture. Strategy, design, and engineering — built to last.",
 };
