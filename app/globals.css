@@ -1,10 +1,12 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-bg-cream: #FAF8F5;
-  --color-text-charcoal: #1F1B18;
-  --color-text-muted: #6E675F;
-  --color-gold-accent: #C5A26A;
+  --color-bg-cream: #faf8f5;
+  --color-text-charcoal: #1f1b18;
+  --color-text-muted: #6e675f;
+  --color-gold-accent: #c5a26a;
+  --color-gold-soft: rgba(197, 162, 106, 0.07);
+  --color-gold-border: rgba(197, 162, 106, 0.15);
   --font-serif: "Cormorant Garamond", serif;
   --font-sans: "Plus Jakarta Sans", sans-serif;
 }
@@ -27,7 +29,7 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.045;
+  opacity: 0.035;
   pointer-events: none;
   z-index: 95;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
@@ -47,6 +49,84 @@ body {
   );
 }
 
+/* ── Floating Warm Shapes (replaces dust canvas) ─────── */
+.warm-shapes {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.warm-shape {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  animation: shape-breathe 18s ease-in-out infinite;
+}
+
+.warm-shape--1 {
+  width: 380px;
+  height: 380px;
+  top: -8%;
+  right: -5%;
+  background: radial-gradient(
+    circle,
+    rgba(197, 162, 106, 0.06) 0%,
+    transparent 70%
+  );
+  animation-duration: 22s;
+  animation-delay: 0s;
+}
+
+.warm-shape--2 {
+  width: 300px;
+  height: 300px;
+  bottom: -10%;
+  left: -5%;
+  background: radial-gradient(
+    circle,
+    rgba(197, 162, 106, 0.05) 0%,
+    transparent 70%
+  );
+  animation-duration: 26s;
+  animation-delay: -6s;
+}
+
+.warm-shape--3 {
+  width: 260px;
+  height: 260px;
+  top: 35%;
+  left: 55%;
+  background: radial-gradient(
+    circle,
+    rgba(197, 162, 106, 0.04) 0%,
+    transparent 70%
+  );
+  animation-duration: 20s;
+  animation-delay: -12s;
+}
+
+@keyframes shape-breathe {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    opacity: 0.7;
+    transform: translate(15px, -10px) scale(1.06);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate(-10px, 8px) scale(0.95);
+  }
+  75% {
+    opacity: 0.8;
+    transform: translate(8px, -5px) scale(1.03);
+  }
+}
+
 /* ── Architectural Blueprint Grid ───────────────────── */
 .blueprint-grid {
   position: fixed;
@@ -56,64 +136,38 @@ body {
   pointer-events: none;
   z-index: 2;
   background-size: 60px 60px;
-  background-image: 
+  background-image:
     linear-gradient(to right, rgba(197, 162, 106, 0.02) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(197, 162, 106, 0.02) 1px, transparent 1px);
+  mask-image: radial-gradient(
+    ellipse 65% 55% at 50% 50%,
+    black 25%,
+    transparent 75%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 65% 55% at 50% 50%,
+    black 25%,
+    transparent 75%
+  );
 }
 
-/* ── Interactive Background Canvas ────────────────────── */
-.background-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ── Ambient Cursor Glow ─────────────────────────────── */
+/* ── Ambient Cursor Glow (subtle warm light) ─────────── */
 .cursor-glow {
   position: fixed;
-  width: 700px;
-  height: 700px;
+  width: 550px;
+  height: 550px;
   background: radial-gradient(
-    circle, 
-    rgba(197, 162, 106, 0.1) 0%, 
-    rgba(197, 162, 106, 0.03) 40%, 
+    circle,
+    rgba(197, 162, 106, 0.08) 0%,
+    rgba(197, 162, 106, 0.025) 40%,
     transparent 70%
   );
   border-radius: 50%;
   pointer-events: none;
   z-index: 1;
   transform: translate(-50%, -50%);
-  filter: blur(50px);
+  filter: blur(40px);
   will-change: left, top;
-}
-
-/* ── Custom Cursor Follower Ring ────────────────────── */
-.cursor-follower {
-  position: fixed;
-  width: 18px;
-  height: 18px;
-  border: 1.2px solid var(--color-gold-accent);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 100;
-  transform: translate(-50%, -50%);
-  will-change: left, top, width, height, background-color;
-  transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
-              height 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
-              background-color 0.3s cubic-bezier(0.25, 1, 0.5, 1),
-              border-color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  display: none; /* Hidden by default, shown via JS if mouse moves */
-}
-
-.cursor-follower.hovering {
-  width: 44px;
-  height: 44px;
-  background-color: rgba(197, 162, 106, 0.08);
-  border-color: var(--color-gold-accent);
 }
 
 /* ── Interactive Title ────────────────────────────────── */
@@ -131,9 +185,63 @@ body {
 
 .interactive-title span {
   display: inline-block;
-  will-change: transform, color;
-  transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), 
-              color 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform, color, text-shadow;
+  transition:
+    color 0.45s cubic-bezier(0.25, 1, 0.5, 1),
+    text-shadow 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  color: var(--color-text-charcoal);
+}
+
+.interactive-title span.letter-glow {
+  color: var(--color-gold-accent);
+  text-shadow:
+    0 0 16px rgba(197, 162, 106, 0.45),
+    0 0 4px rgba(197, 162, 106, 0.2);
+}
+
+/* ── Stagger Letter Entrance ─────────────────────────── */
+.stagger-letter {
+  opacity: 0;
+  animation: letter-entrance 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes letter-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* ── Gold Accent Line ────────────────────────────────── */
+.accent-line {
+  width: 0;
+  height: 1.5px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-gold-accent),
+    transparent
+  );
+  border-radius: 2px;
+  margin: 0 auto;
+  animation: line-expand 1.2s cubic-bezier(0.25, 1, 0.5, 1) 0.8s forwards;
+}
+
+@keyframes line-expand {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 56px;
+    opacity: 0.6;
+  }
 }
 
 /* ── Elegant Slogan Rotator ──────────────────────────── */
@@ -188,9 +296,10 @@ body {
   text-transform: uppercase;
   cursor: pointer;
   overflow: hidden;
-  transition: border-color 0.45s cubic-bezier(0.25, 1, 0.5, 1), 
-              color 0.45s cubic-bezier(0.25, 1, 0.5, 1), 
-              transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+  transition:
+    border-color 0.45s cubic-bezier(0.25, 1, 0.5, 1),
+    color 0.45s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
   text-decoration: none;
   z-index: 10;
   will-change: transform;
@@ -227,4 +336,20 @@ body {
 
 .premium-btn:hover .premium-btn-arrow {
   transform: translateX(6px);
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 640px) {
+  .warm-shape--1 {
+    width: 220px;
+    height: 220px;
+  }
+  .warm-shape--2 {
+    width: 180px;
+    height: 180px;
+  }
+  .warm-shape--3 {
+    width: 150px;
+    height: 150px;
+  }
 }
